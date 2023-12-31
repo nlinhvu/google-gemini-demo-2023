@@ -5,7 +5,7 @@ import com.google.cloud.vertexai.generativeai.preview.ContentMaker;
 import com.google.cloud.vertexai.generativeai.preview.GenerativeModel;
 import com.google.cloud.vertexai.generativeai.preview.PartMaker;
 import com.google.cloud.vertexai.generativeai.preview.ResponseHandler;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,10 +16,13 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/gemini-pro-vision")
-@RequiredArgsConstructor
 public class GeminiProVisionController {
 
     private final GenerativeModel generativeModel;
+
+    public GeminiProVisionController(@Qualifier("geminiProVisionGenerativeModel") GenerativeModel generativeModel) {
+        this.generativeModel = generativeModel;
+    }
 
     @PostMapping
     public String file(@RequestParam("file") MultipartFile file, @RequestParam String question) throws IOException {
